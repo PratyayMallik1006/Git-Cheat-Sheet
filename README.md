@@ -466,3 +466,93 @@ git switch master
 git restore --source=bugfix-signup-form -- file1.txt
 git commit -m "copying file1"
 ```
+# Collaboration
+## Workflows
+1. **Centralized** - All developers share single repository, incase central repository crashes, nothing can be done.
+2. **Distributed** - Every developer has a repository in their machine, synchronization work with others is complex
+3. **Centralized Workflow** - Every developer has a repository in their machine, a central repository (private server, cloud) is also there to synchronize
+ - ***PUSH*** - Adding data to central repository
+ - ***PULL*** - Getting data to central repository
+4. **Integration Manager** - Maintainers and Contributors
+- ***FORK*** - Contributor makes copy of repository in the cloud
+- ***CLONE*** - Contributor get a copy of repository in their machine
+- ***PUSH***- Contributor uploads data to their FORKED repository
+- ***PULL REQUEST*** - Contributors Requests the Maintainer to PULL the changes to review and then PUSH changes to the official repository
+## Cloning a Repository
+```git
+git clone https://github.com/userName/projectName.git changedProjectName
+git remote -v
+```
+## Fetching
+If there is a change in remote repository (github), we need to fetch changes to cloned repository
+```git
+git fetch origin
+git merge origin/master
+```
+Show divergence between local and remote repository
+```git
+git branch -vv
+```
+## Pull = Fetch +Merge
+```git
+git pull
+git log --oneline --all --graph
+```
+**Pull Rebase:**
+```git
+git pull --rebase
+```
+## Push
+Sending Local repository to Remote repository
+```git
+git push origin master
+```
+**Force Push:** Discarding conflicting changes in Remote repository
+```git
+git push -f origin master
+```
+**Incase of Conflict:** First PULL, then PUSH
+## Storing Credentials
+**For 15 mins:**
+```git
+git config --global credential.helper cache
+```
+**Permanently:**
+1. Windows: Windows Credential Store
+2. Mac: Keychain
+## Sharing Tags
+By default the PUSH command doesn't transfer Tags to remote repository
+```git
+git tag v1.0
+git push origin v1.0
+```
+**Removing Tags:**
+```git
+git push origin --delete v1.0
+git tag -d v1.0
+```
+**Releases:** Any Tag can be used to make a "Release" on Github
+## Sharing Branches to Github
+```git
+git switch -C bugfix-login-page
+git branch -r
+git push -u origin bugfix-login-page
+```
+Deleting
+```git
+git push -d origin bugfix-login-page
+git switch master
+git branch -D bugfix-login-page
+```
+**Deleting Branches That Don't Exist in Remote Repository:**
+```git
+git remote prune origin
+```
+## PULL Request
+```git
+git switch -C message-feature
+git push -u origin message-feature
+```
+## Keeping Forked Repository Up to Date
+1. PULL from Base (original) Repository
+2. PUSH to Forked Repository
