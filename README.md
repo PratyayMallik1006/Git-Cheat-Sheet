@@ -47,7 +47,8 @@ Brief Documentation
 ```git
 git config -h
 ```
-# Initializing Repository
+# Creating Snapshots
+## Initializing Repository
 ```git
 mkdir shopping
 cd shoppinh
@@ -58,7 +59,7 @@ Removing git
 ```git
 rm -rf .git
 ```
-# Git Workflow
+## Git Workflow
 1. Staging (Indexing)
 ```git
 git add file1.txt file2.txt
@@ -141,7 +142,7 @@ git status -s
 ## Viewing Staged and Unstaged Changes
 Staged Changes
 ```git
-git diff --stages
+git diff --staged
 ```
 Unstaged Changes
 ```git
@@ -298,4 +299,170 @@ git show v1.1
 Deleting Tag
 ```git
 git tag -d v1.1
+```
+# Branching
+## Working With Branches
+Creating new branch
+```git
+git branch bugfix
+```
+Viewing all branches
+```git
+git branch
+```
+Checking the current branch
+```git
+git status
+```
+Changing to different branch
+```git
+git switch bugfix
+```
+Changing branch name
+```git
+git branch -m bugfix bugfix-signup-form
+```
+Viewing Commits across all branches
+```git
+git log --oneline --all
+```
+Deleting branch
+```git
+git branch -D bugfix-signup-form
+```
+## Comparing Branches
+```git
+git log master..bugfix-signup-form
+git diff master..bugfix-signup-form
+```
+If we are on MASTER branch
+```git
+git diff bugfix-signup-form
+git diff --name-status bugfix-signup-form
+```
+## Stashing - Storing Local Changes
+Until changes of current branch is not committed we cannot move to another branch, we can either commit changes or stash changes
+>**Stashing:** Storing local changes to move branches
+```git
+git stash push -m "new feature"
+```
+Stashing all changes
+```git
+git stash push -a -m "new feature"
+```
+View Stash
+```git
+git stash list
+```
+Apply changes after coming back to branch
+```git
+git stash show 1
+git stash apply 1
+```
+Removing Stash
+```git
+git stash drop 1
+```
+Removing all Stashes
+```git
+git stash clear
+```
+## Merging
+**Fast Forward Merging:** When there is no change in MASTER branch, we can directly merge into other branch
+**3 Way Merge:** Changes in both,  MASTER branch and new branch.
+## Fast Forward Merge
+```git
+git log --oneline --all --graph
+git merge bugfix-signup-form
+```
+**Preventing Fast Forward Merge:**
+Uses 'recursive' strategy
+```git
+git merge --no-ff bugfix-signup-form
+```
+>Why Preventing Fast Forward Merge is Preferred:
+>1. True reflection of history
+>2. Allow reverting a feature
+
+**Disabling Fast Forwarding in Current Repository:**
+```git
+git config ff no
+```
+## 3-Way Merge
+Changes in both,  MASTER branch and new branch.
+```git
+git log --oneline --all --graph
+git merge bugfix-signup-form
+```
+## Viewing Merged and Unmerged Branches
+All Merged branched should be deleted
+```git
+git branch --merged
+git branch --no-merged
+```
+## Merge Conflicts
+```git
+git merger bugfix-signup-form
+git status
+```
+## Visual Merge Tools
+1. Kdiff
+2. P4Merge
+3. WinMerge
+**Configuring Default Merge Tool**
+```git
+git config --global merge.tool p4merge
+git config --global mergetool.p4merge "C:\p4merge"
+```
+## Aborting a Merge
+```git
+git merger bugfix-signup-form
+git merger --abort
+```
+## Undoing Faulty Merge
+```git
+git merger bugfix-signup-form
+```
+1. Removing a Commit
+```git
+git reset --hard HEARD~1
+```
+2. Reverting a Commit
+```git
+git revert -m 1 HEAD
+```
+## Squash Merge
+Just committing the changes in new branch as a new commit
+```git
+git merge --squash bugfix-signup-form
+git commit -m "Squash merge"
+git branch -D bugfix-signup-form
+```
+## Rebasing
+![Rebasing](https://cms-assets.tutsplus.com/cdn-cgi/image/width=630/uploads/users/1885/posts/106923/image-upload/rebase.png)
+Making 3-way merge to Fast Forward Merge
+```git
+git switch bugfix-signup-form
+git rebase master
+git switch master
+git merge bugfix-signup-form
+```
+Rebasing after solving conflict
+```git
+git rebase --skip
+git rebase --continue
+git rebase --abort
+```
+## Cherry Picking
+Copying only one particular commit from another branch
+```git
+git cherry-pick 8f092f7
+git commit -m "copying commit1"
+```
+## Picking a File from Another Branch
+Copying only one particular file from another branch
+```git
+git switch master
+git restore --source=bugfix-signup-form -- file1.txt
+git commit -m "copying file1"
 ```
