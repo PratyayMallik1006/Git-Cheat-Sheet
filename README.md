@@ -1,5 +1,4 @@
-# Git-Cheat-Sheet
-
+# Git Cheat Sheet
 ### Alternatives:
 - Microsoft Team Foundation Server
 - Subversion
@@ -228,4 +227,75 @@ git log --oneline file1.txt
 ## Formatting the Log Output
 ```git
 git log --pretty=format:"%an author, Hash %H, abbriviated %h, date %Cgreen%cd"
+```
+## Viewing Commit
+```git
+git log --oneline
+git show 8f092f7
+git show HEAD~2:folder1/folder2/file1.txt
+git show HEAD~2 --name-only
+git show HEAD~2 --name-status
+```
+## Viewing Changes Across Commits
+```git
+git show HEAD~2 HEAD
+```
+## Check Out a Commit
+Viewing older version by moving HEAD from MASTER
+```git
+git checkout 8f092f7
+git log --oneline --all
+git checkout master
+```
+## Bisect
+To debug commits by diving the commit history into two parts and defining which half is good and which half is bad
+## Shortlog - Finding Contributors
+```git
+git shortlog
+```
+Short by number of commits of author
+```git
+git shortlog -n
+```
+Suppress - Only author and number of commits
+```git
+git shortlog -n -s
+```
+Email of Author
+```git
+git shortlog -n -s -e
+```
+## History of a File
+```git
+git log --oneline --stat file1.txt
+git log --oneline --patch file1.txt
+```
+## Restoring Deleted File
+```git
+git log --oneline -- file1.txt
+git checkout 8f092f7 file1.txt
+git commit -m "Restored file1"
+```
+## Blame - Find the Author
+```git
+git blame -e file4.txt
+```
+## Tagging - Bookmarking
+```git
+git tag v1.0
+git tag v1.0 8f092f7
+git checkout v1.0
+```
+Seeing all tags
+```git
+git tag -n
+```
+Annotated Tag
+```git
+git tag v1.1 -m "Version 1.1"
+git show v1.1
+```
+Deleting Tag
+```git
+git tag -d v1.1
 ```
