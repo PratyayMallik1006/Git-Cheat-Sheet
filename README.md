@@ -330,6 +330,10 @@ Deleting branch
 ```git
 git branch -D bugfix-signup-form
 ```
+Using switch to create a new branch
+```git
+git switch -C bugfix-login-page
+```
 ## Comparing Branches
 ```git
 git log master..bugfix-signup-form
@@ -431,6 +435,8 @@ git reset --hard HEARD~1
 ```git
 git revert -m 1 HEAD
 ```
+![hardsoft](https://s3-ap-northeast-2.amazonaws.com/opentutorials-user-file/module/2676/5131.png)
+
 ## Squash Merge
 Just committing the changes in new branch as a new commit
 ```git
@@ -556,3 +562,148 @@ git push -u origin message-feature
 ## Keeping Forked Repository Up to Date
 1. PULL from Base (original) Repository
 2. PUSH to Forked Repository
+# Rewriting History
+## Why Rewrite History
+**Bad History:**
+- Poor commit messages
+- Large commits
+- Small commits
+## Undoing Commits:
+If the commit is pushed
+```git
+git revert HEAD
+```
+If commit exits only in the local repository:
+```git
+git reset --hard HEAD~1
+```
+![hardsoft](https://s3-ap-northeast-2.amazonaws.com/opentutorials-user-file/module/2676/5131.png)
+## Reverting Commit
+Undoing commit that's been pushed to remote repository
+```git
+git revert HEAD~2
+```
+Reverting last 3 commits
+```git
+git revert HEAD~3..HEAD
+```
+Reverting last 3 commits, without making commits
+```git
+git revert --no-commit HEAD~3..HEAD
+git status -s
+git revert --continue
+```
+Aborting Revert
+```git
+git revert --abort
+```
+## Recovering Lost Commits While Resetting
+```git
+git reset --hard HEAD~4
+git reflog
+git reset --hard HEAD@{1}
+```
+## Amending the Last Commit
+```git
+git add .
+git commit --amend
+git log --oneline
+```
+Removing unwanted file from last commit
+```git
+git reset --mixed HEAD~1
+git status -s
+git clean -f -d
+git add .
+git commit -m "Same message as last commit"
+```
+## Amending the Earlier Commit
+```git
+git log --oneline
+git show 8f092f7
+git rebase -i 8f092f7
+edit 8f092f7
+git add .
+git commit --ammend
+git log --oneline --all --graph
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+## Dropping a Commit
+```git
+git log --oneline
+git show 8f092f7
+git rebase -i 8f092f7~1
+drop 8f092f7
+git status -s
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+## Rewording Commit Messages
+```git
+git log --oneline
+git rebase -i 8f092f7~1
+reword 8f092f7
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+## Reordering Commit
+```git
+git rebase -i 8f092f7
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+## Squashing Commits
+Combining multiple commits
+```git
+git rebase -i 8f092f7
+squash 8f092f7
+squash 9f092f8
+squash 7f092fa
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+**Fixup:**
+Same as squash
+```git
+git rebase -i 8f092f7
+pick 8f092f7
+fixup 9f092f8
+fixup 7f092fa
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
+## Splitting a Commit
+```git
+git rebase -i 8f092f7~1
+edit 8f092f7
+git reset --mixed HEAD~1
+git status -s
+git add file1.txt
+git commit -m "Uploading file1.txt"
+git add file2.txt
+git commit -m "Uploading file2.txt"
+git rebase --continue
+```
+Aborting
+```git
+git rebase --abort
+```
